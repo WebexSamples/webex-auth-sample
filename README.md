@@ -16,7 +16,7 @@ The HTML page must be served from a web browser (vs. the local file system)
 
 ## Usage
 
-- Register a Spark application at https://dev-preview.ciscospark.com/apps.html
+- Register a Spark application at https://developer.ciscospark.com/apps.html
 - Note, the application URL provided during registration should be the URL where this sample app page will be hosted
 - The application Client ID and Client Secret generated during registration are required to run the app
 
