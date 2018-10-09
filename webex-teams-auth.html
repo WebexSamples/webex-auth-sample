@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <script type="text/javascript">
-//Sample application demonstrating how to perform a Spark OAuth2 authentication and Spark API access token request
+//Sample application demonstrating how to perform a Webex Teams OAuth2 authentication and Webex Teams API access token request
 //Note: this page must be accessed from a web server, Step #3 below may fail if loaded from the file system
 
 // Helper function that generates a random alpha/numeric string
@@ -30,10 +30,10 @@ function codeClick() {
 	var appClientId=document.getElementById('clientId').value;
 	var appRedirectUri=document.getElementById('redirectUri').value;
 
-	//Build the request URL.  The base URL and next 4 items are typically always the same for Spark web apps
-	var requestUrl = 'https://api.ciscospark.com/v1/authorize?' + //Spark OAuth2 base URL
+	//Build the request URL.  The base URL and next 4 items are typically always the same for Webex Teams web apps
+	var requestUrl = 'https://api.ciscospark.com/v1/authorize?' + //Webex Teams OAuth2 base URL
 		'response_type=code&' + // Requesting the OAuth2 'Authentication Code' flow
-		'scope='+ encodeURIComponent('spark:rooms_read') + '&' + // Requested permission, i.e. Spark room info
+		'scope='+ encodeURIComponent('spark:rooms_read') + '&' + // Requested permission, i.e. Webex Teams room info
 		// The following items are provided by the developer in the source code/config or generated dynamically at run time
 		'state=' + encodeURIComponent(randomString(63)) + '&' +	// Random string for OAuth2 nonce replay protection
 		'client_id=' + encodeURIComponent(appClientId) + '&' + // The custom app Client ID
@@ -96,12 +96,12 @@ textarea {height: 140px;}
 </style>
 
 	<head>
-		<title>Spark Authentication Demo</title>
+		<title>Webex Teams Authentication Demo</title>
 	</head>
 	<body>
 	<div class="wrapper">
 	<div class="glasspane">
-		<h1>Spark Authentication Demo</h1>
+		<h1>Webex Teams Authentication Demo</h1>
 	</div>
 	<div class="table">
 		<table>
