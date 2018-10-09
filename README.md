@@ -5,14 +5,14 @@
 **Description**:  A simple application demonstrating how to retrieve a Cisco Webex Teams OAuth2 token for use with the Cisco Webex Teams API.
 
   - **Technology stack**: HTML/Javascript
-  - **Status**:  v2.0 [CHANGELOG](CHANGELOG.md).
-  - **Live Demo**: This sample code accompanies the 'Webex Teams - Application Registration and Authentication' learning lab at https://learninglabs.cisco.com
+  - **Status**:  v1.0 [CHANGELOG](CHANGELOG.md).
+  - **Live Demo**: This sample code accompanies the [Understanding the OAuth Flow of a Webex Teams Integration](https://learninglabs.cisco.com/lab/collab-spark-auth/step/1) learning lab at https://learninglabs.cisco.com
 
 **Screenshot**: ![webex-teams-auth.html](screenshot.png)
 
 ## Installation
 
-The HTML page must be served from a web server (vs. the local file system)
+The HTML page must be served from a web server (not the local file system)
 
 ## Usage
 
