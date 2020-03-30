@@ -1,4 +1,4 @@
-# A simple application demonstrating retrieving a Cisco Common Identity SSO token for use with Spark API
+# A simple application demonstrating retrieving a Cisco Common Identity SSO token for use with Webex Teams API
 
 # Cisco Webex Teams Web Application Authentication
 
