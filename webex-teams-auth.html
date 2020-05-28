@@ -69,6 +69,7 @@ function tokenClick() {
 			if (xhttp.status == 200) { // And the status = 200 (OK), then...
 				var authInfo = JSON.parse(xhttp.responseText); // Parse the JSON response into an object
 				document.getElementById('token').value = authInfo['access_token']; // Retrieve the access_token field, and display it
+                document.getElementById('refresh').value = authInfo['refresh_token']; // Retrieve the refresh_token field, and display it
 			} else alert('Error requesting access token: ' + xhttp.statusText)
  		}
 	}
@@ -129,7 +130,11 @@ textarea {height: 140px;}
 			<tr>
 				<td>Access Token:</td> 
 				<td><textarea id="token" readonly style="vertical-align: top"></textarea></td>
-			</tr>
+            </tr>
+			<tr>
+				<td>Refresh Token:</td> 
+				<td><textarea id="refresh" readonly style="vertical-align: top"></textarea></td>
+			</tr>            
 		</table>
 	</div>
 	</div>
