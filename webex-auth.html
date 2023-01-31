@@ -31,7 +31,7 @@ function codeClick() {
 	var appRedirectUri=document.getElementById('redirectUri').value;
 
 	//Build the request URL.  The base URL and next 4 items are typically always the same for Webex Teams web apps
-	var requestUrl = 'https://api.ciscospark.com/v1/authorize?' + //Webex Teams OAuth2 base URL
+	var requestUrl = 'https://webexapis.com/v1/authorize?' + //Webex OAuth2 base URL
 		'response_type=code&' + // Requesting the OAuth2 'Authentication Code' flow
 		'scope='+ encodeURIComponent('spark:rooms_read') + '&' + // Requested permission, i.e. Webex Teams room info
 		// The following items are provided by the developer in the source code/config or generated dynamically at run time
@@ -73,7 +73,7 @@ function tokenClick() {
 			} else alert('Error requesting access token: ' + xhttp.statusText)
  		}
 	}
-	xhttp.open('POST', 'https://api.ciscospark.com/v1/access_token', true); // Initialize the HTTP request object for POST to the access token URL
+	xhttp.open('POST', 'https://webexapis.com/v1/access_token', true); // Initialize the HTTP request object for POST to the access token URL
 	// Build the HTML form request body 
 	var body = 'grant_type=authorization_code&'+  // This is an OAuth2 Authorization Code request
 		'redirect_uri='+encodeURIComponent(appRedirectUri)+'&'+ // Same custom app Redirect URI 
@@ -97,12 +97,12 @@ textarea {height: 140px;}
 </style>
 
 	<head>
-		<title>Webex Teams Authentication Demo</title>
+		<title>Webex APIs Authentication Demo</title>
 	</head>
 	<body>
 	<div class="wrapper">
 	<div class="glasspane">
-		<h1>Webex Teams Authentication Demo</h1>
+		<h1>Webex APIs Authentication Demo</h1>
 	</div>
 	<div class="table">
 		<table>
