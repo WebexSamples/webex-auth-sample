@@ -44,7 +44,7 @@ A simple application demonstrating how to retrieve a Cisco Webex OAuth2 token fo
 - The **Redirect URI** provided during registration should be the URL where this sample app page will be hosted, which can be a 'localhost' URL, e.g.:
 
     ```
-    http://127.0.0.1:8080/webex-auth-html
+    http://127.0.0.1:8080/webex-auth.html
     ```
 
 - **Scopes** should include, at minimum, `spark:rooms_read` (note `spark:all` will not work)
