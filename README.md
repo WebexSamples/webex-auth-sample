@@ -14,6 +14,8 @@ A live demo of the project can be viewed on GitHub. Please follow the link below
 
 - [Webex Auth Sample Live Demo](https://webexsamples.github.io/webex-auth-sample/webex-auth.html)
 
+To test this with a live integration, make sure to add `https://webexsamples.github.io/webex-auth-sample/webex-auth.html` to your redirect URIs on the [Developer Portal](https://developer.webex.com/my-apps).
+
 ## Installation
 
 * From a terminal, clone this repo to your local PC:
