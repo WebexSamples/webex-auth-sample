@@ -27,61 +27,67 @@ var parseQueryStr = function( queryString) {
 
 // Step #1: Fires when the user clicks the 'Request Auth Code' button
 function codeClick() {
-	var appClientId=document.getElementById('clientId').value;
-	var appRedirectUri=document.getElementById('redirectUri').value;
+    var appClientId = document.getElementById('clientId').value;
+    var appRedirectUri = document.getElementById('redirectUri').value;
+    var appOAuthScopes = document.getElementById('oauthScopes').value;
+    var appStateValue = document.getElementById('stateValue').value;
 
-	//Build the request URL.  The base URL and next 4 items are typically always the same for Webex Teams web apps
-	var requestUrl = 'https://webexapis.com/v1/authorize?' + //Webex OAuth2 base URL
-		'response_type=code&' + // Requesting the OAuth2 'Authentication Code' flow
-		'scope='+ encodeURIComponent('spark:rooms_read') + '&' + // Requested permission, i.e. Webex Teams room info
-		// The following items are provided by the developer in the source code/config or generated dynamically at run time
-		'state=' + encodeURIComponent(randomString(63)) + '&' +	// Random string for OAuth2 nonce replay protection
-		'client_id=' + encodeURIComponent(appClientId) + '&' + // The custom app Client ID
-		'redirect_uri=' + encodeURIComponent(appRedirectUri); // The custom app's Redirect URI
-	window.location = requestUrl; // Redirect the browser to the OAuth2 kickoff URL
+    //Build the request URL.
+    var requestUrl = 'https://webexapis.com/v1/authorize?' + 
+        'response_type=code&' + 
+        'scope=' + encodeURIComponent(appOAuthScopes) + '&' + 
+        'state=' + encodeURIComponent(appStateValue) + '&' +    
+        'client_id=' + encodeURIComponent(appClientId) + '&' + 
+        'redirect_uri=' + encodeURIComponent(appRedirectUri); 
+    window.location = requestUrl; 
 }
 
 // Step #2: On page load, check if the 'code=' query param is present
 // If so user has already authenticated, and  page has been reloaded via the Redirect URI
 window.onload = function(e) {
-	document.getElementById('redirectUri').value=window.location.href.split("?")[0]; // Detect the current page's base URL
+    document.getElementById('redirectUri').value = window.location.href.split("?")[0]; // Detect the current page's base URL
 
-	var params = parseQueryStr(window.location.search.substring(1)); // Parse the query string params into a dictionary
-	if (params['code']) { // If the query param 'code' exists, then...
-		document.getElementById('code').value = params['code']; // Display the auth code
-		document.getElementById('tokenButton').removeAttribute('hidden'); // Reveal the 'Request Access Token' button
-	}
-	if (params['error']) { // If the query param 'error' exists, then something went wrong...
-		alert('Error requesting auth code: ' + params['error'] + ' / ' + params['error_description']);
-	}
+    var params = parseQueryStr(window.location.search.substring(1)); // Parse the query string params into a dictionary
+    if (params['code']) { // If the query param 'code' exists, then...
+        document.getElementById('code').value = params['code']; // Display the auth code
+        document.getElementById('tokenButton').removeAttribute('hidden'); // Reveal the 'Request Access Token' button
+    }
+    if (params['state']) { // If the query param 'state' exists, then...
+        document.getElementById('stateDisplay').value = params['state']; // Display the state parameter
+    }
+    if (params['error']) { // If the query param 'error' exists, then something went wrong...
+        alert('Error requesting auth code: ' + params['error'] + ' / ' + params['error_description']);
+    }
 }
 
 // Step #3: Fires when the user clicks the 'Request Access Token' button
 // Takes the auth code and requests an access token
 function tokenClick() {
-	var appClientId=document.getElementById('clientId').value;
-	var appClientSecret=document.getElementById('clientSecret').value;
-	var appRedirectUri=document.getElementById('redirectUri').value;
+    var appClientId = document.getElementById('clientId').value;
+    var appClientSecret = document.getElementById('clientSecret').value;
+    var appRedirectUri = document.getElementById('redirectUri').value;
+    var appStateValue = document.getElementById('stateValue').value;
 
-	xhttp = new XMLHttpRequest(); // Create an AJAX HTTP request object
-	xhttp.onreadystatechange = function() {  // Define a handler, which fires when the request completes
-		if (xhttp.readyState == 4) { // If the request state = 4 (completed)...
-			if (xhttp.status == 200) { // And the status = 200 (OK), then...
-				var authInfo = JSON.parse(xhttp.responseText); // Parse the JSON response into an object
-				document.getElementById('token').value = authInfo['access_token']; // Retrieve the access_token field, and display it
+    var xhttp = new XMLHttpRequest(); // Create an AJAX HTTP request object
+    xhttp.onreadystatechange = function() {  // Define a handler, which fires when the request completes
+        if (xhttp.readyState == 4) { // If the request state = 4 (completed)...
+            if (xhttp.status == 200) { // And the status = 200 (OK), then...
+                var authInfo = JSON.parse(xhttp.responseText); // Parse the JSON response into an object
+                document.getElementById('token').value = authInfo['access_token']; // Retrieve the access_token field, and display it
                 document.getElementById('refresh').value = authInfo['refresh_token']; // Retrieve the refresh_token field, and display it
-			} else alert('Error requesting access token: ' + xhttp.statusText)
- 		}
-	}
-	xhttp.open('POST', 'https://webexapis.com/v1/access_token', true); // Initialize the HTTP request object for POST to the access token URL
-	// Build the HTML form request body 
-	var body = 'grant_type=authorization_code&'+  // This is an OAuth2 Authorization Code request
-		'redirect_uri='+encodeURIComponent(appRedirectUri)+'&'+ // Same custom app Redirect URI 
-		'code='+encodeURIComponent(document.getElementById('code').value)+'&'+ // User auth code retrieved previously
-		'client_id='+encodeURIComponent(appClientId)+'&'+ // The custom app Client ID
-		'client_secret='+encodeURIComponent(appClientSecret); // The custom app Client Secret
-	xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Sending the content as URL-encoded form data
-	xhttp.send(body); // Execute the AJAX HTTP request
+            } else alert('Error requesting access token: ' + xhttp.statusText)
+         }
+    }
+    xhttp.open('POST', 'https://webexapis.com/v1/access_token', true); // Initialize the HTTP request object for POST to the access token URL
+    // Build the HTML form request body 
+    var body = 'grant_type=authorization_code&'+  // This is an OAuth2 Authorization Code request
+        'state=' + encodeURIComponent(appStateValue) + '&' +
+        'redirect_uri='+encodeURIComponent(appRedirectUri)+'&'+ // Same custom app Redirect URI 
+        'code='+encodeURIComponent(document.getElementById('code').value)+'&'+ // User auth code retrieved previously
+        'client_id='+encodeURIComponent(appClientId)+'&'+ // The custom app Client ID
+        'client_secret='+encodeURIComponent(appClientSecret); // The custom app Client Secret
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Sending the content as URL-encoded form data
+    xhttp.send(body); // Execute the AJAX HTTP request
 }
 </script>
 
@@ -115,6 +121,14 @@ textarea {height: 140px;}
 				<td><input id="clientSecret"/></td>
 			</tr>
 			<tr>
+				<td>OAuth Scopes:</td>
+				<td><input id="oauthScopes" value="spark:rooms_read"/></td>
+			</tr>
+			<tr>
+				<td>State:</td>
+				<td><input id="stateValue" value="MyAuthState"/></td>
+			</tr>
+			<tr>
 				<td>Redirect URI:</td> 
 				<td><input id="redirectUri"/><button name="codeButton" type="button" onClick="codeClick()">Request Auth Code</button></td>
 			</tr>
@@ -124,13 +138,22 @@ textarea {height: 140px;}
 	<div class="table">
 		<table>
 			<tr>
+				<td>Returned State:</td>
+				<td><input id="stateDisplay" readonly/></td>
+			</tr>
+			<tr>
 				<td>Auth Code:</td>
 				<td><input id="code" readonly/> <button id="tokenButton" type="button" hidden onClick="tokenClick()">Request Access Token</button></td>
 			</tr>
+		</table>
+	</div>
+	
+	<div class="table">
+		<table>
 			<tr>
 				<td>Access Token:</td> 
 				<td><textarea id="token" readonly style="vertical-align: top"></textarea></td>
-            </tr>
+			</tr>
 			<tr>
 				<td>Refresh Token:</td> 
 				<td><textarea id="refresh" readonly style="vertical-align: top"></textarea></td>
