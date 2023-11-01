@@ -8,6 +8,12 @@ A simple application demonstrating how to retrieve a Cisco Webex OAuth2 token fo
 
   - **Status**:  v1.0 [CHANGELOG](CHANGELOG.md)
 
+## Demo
+
+A live demo of the project can be viewed on GitHub. Please follow the link below:
+
+- [Webex Auth Sample Live Demo](https://webexsamples.github.io/webex-auth-sample/webex-auth.html)
+
 ## Installation
 
 * From a terminal, clone this repo to your local PC:
